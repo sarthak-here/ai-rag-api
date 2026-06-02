@@ -16,10 +16,7 @@ class DocumentRepository(BaseRepository[Document]):
 
     async def list(self, *, skip: int = 0, limit: int = 100) -> list[Document]:
         result = await self._session.execute(
-            select(Document)
-            .options(selectinload(Document.chunks))
-            .offset(skip)
-            .limit(limit)
+            select(Document).options(selectinload(Document.chunks)).offset(skip).limit(limit)
         )
         return list(result.scalars().all())
 
@@ -40,9 +37,7 @@ class DocumentRepository(BaseRepository[Document]):
         await self._session.flush()
 
     async def delete_chunks_for_document(self, document_id: str) -> None:
-        result = await self._session.execute(
-            select(Chunk).where(Chunk.document_id == document_id)
-        )
+        result = await self._session.execute(select(Chunk).where(Chunk.document_id == document_id))
         for chunk in result.scalars().all():
             await self._session.delete(chunk)
         await self._session.flush()
