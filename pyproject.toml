@@ -57,7 +57,7 @@ select = [
     "PTH",      # use pathlib over os.path
     "RUF",      # ruff-specific
 ]
-ignore = ["ANN101", "ANN102", "ANN401", "B008"]
+ignore = ["ANN401", "B008"]
 
 [tool.ruff.lint.isort]
 known-first-party = ["rag_api"]

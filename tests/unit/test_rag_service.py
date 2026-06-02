@@ -1,6 +1,6 @@
 """Unit tests for RAGService."""
 
-from datetime import datetime, timezone
+import datetime
 from unittest.mock import AsyncMock, MagicMock
 
 import pytest
@@ -31,7 +31,7 @@ def _hit(doc_id: str = "doc-1", dist: float = 0.1) -> SearchResult:
 
 
 class TestRAGServiceQuery:
-    def test_query_returns_answer_with_sources(self):
+    def test_query_returns_answer_with_sources(self) -> None:
         vs = MagicMock()
         vs.search.return_value = [_hit()]
         ai = MagicMock()
@@ -44,7 +44,7 @@ class TestRAGServiceQuery:
         assert len(result.sources) == 1
         assert result.sources[0].relevance_score == pytest.approx(0.9)
 
-    def test_query_filters_by_document_ids(self):
+    def test_query_filters_by_document_ids(self) -> None:
         vs = MagicMock()
         vs.search.return_value = [_hit("doc-1"), _hit("doc-2")]
         ai = MagicMock()
@@ -56,7 +56,7 @@ class TestRAGServiceQuery:
         assert len(result.sources) == 1
         assert result.sources[0].document_id == "doc-1"
 
-    def test_query_with_no_hits_returns_no_context_message(self):
+    def test_query_with_no_hits_returns_no_context_message(self) -> None:
         vs = MagicMock()
         vs.search.return_value = []
         ai = MagicMock()
@@ -69,9 +69,9 @@ class TestRAGServiceQuery:
 
 
 class TestRAGServiceSummarize:
-    async def test_summarize_happy_path(self):
+    async def test_summarize_happy_path(self) -> None:
         repo = MagicMock()
-        now = datetime.now(tz=timezone.utc)
+        now = datetime.datetime.now(tz=datetime.UTC)
         doc = Document(id="doc-1", title="T", content="Long text...", source=None)
         doc.created_at = now
         doc.updated_at = now
@@ -87,7 +87,7 @@ class TestRAGServiceSummarize:
         assert result.summary == "A concise summary."
         assert result.document_id == "doc-1"
 
-    async def test_summarize_missing_doc_raises(self):
+    async def test_summarize_missing_doc_raises(self) -> None:
         repo = MagicMock()
         repo.get = AsyncMock(return_value=None)
         service = _make_service(repo=repo)

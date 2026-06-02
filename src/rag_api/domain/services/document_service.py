@@ -1,6 +1,11 @@
 from rag_api.core.exceptions import EmptyDocumentError, NotFoundError
 from rag_api.core.logging import get_logger
-from rag_api.domain.schemas.document import DocumentCreate, DocumentDetail, DocumentList, DocumentResponse
+from rag_api.domain.schemas.document import (
+    DocumentCreate,
+    DocumentDetail,
+    DocumentList,
+    DocumentResponse,
+)
 from rag_api.infrastructure.db.models import Chunk, Document
 from rag_api.infrastructure.db.repositories.document_repository import DocumentRepository
 from rag_api.infrastructure.vector_store.chromadb_store import VectorStore

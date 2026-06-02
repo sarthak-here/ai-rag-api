@@ -21,7 +21,12 @@ from unittest.mock import AsyncMock, MagicMock
 import pytest
 import pytest_asyncio
 from fastapi.testclient import TestClient
-from sqlalchemy.ext.asyncio import AsyncSession, async_sessionmaker, create_async_engine
+from sqlalchemy.ext.asyncio import (
+    AsyncEngine,
+    AsyncSession,
+    async_sessionmaker,
+    create_async_engine,
+)
 
 from rag_api.infrastructure.db.base import Base
 from rag_api.infrastructure.db.models import Chunk, Document  # noqa: F401 — ensures tables registered
@@ -34,7 +39,7 @@ TEST_DB_URL = "sqlite+aiosqlite:///:memory:"
 
 
 @pytest_asyncio.fixture
-async def async_engine():
+async def async_engine() -> AsyncGenerator[AsyncEngine, None]:
     engine = create_async_engine(TEST_DB_URL, echo=False)
     async with engine.begin() as conn:
         await conn.run_sync(Base.metadata.create_all)
@@ -45,7 +50,7 @@ async def async_engine():
 
 
 @pytest_asyncio.fixture
-async def session(async_engine) -> AsyncGenerator[AsyncSession, None]:
+async def session(async_engine: AsyncEngine) -> AsyncGenerator[AsyncSession, None]:
     factory = async_sessionmaker(async_engine, expire_on_commit=False)
     async with factory() as s:
         yield s
