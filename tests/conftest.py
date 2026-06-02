@@ -22,14 +22,17 @@ import pytest
 import pytest_asyncio
 from fastapi.testclient import TestClient
 from sqlalchemy.ext.asyncio import (
-    async_sessionmaker,
     AsyncEngine,
     AsyncSession,
+    async_sessionmaker,
     create_async_engine,
 )
 
 from rag_api.infrastructure.db.base import Base
-from rag_api.infrastructure.db.models import Chunk, Document  # noqa: F401 — ensures tables registered
+from rag_api.infrastructure.db.models import (  # noqa: F401 — ensures tables registered
+    Chunk,
+    Document,
+)
 from rag_api.infrastructure.db.repositories.document_repository import DocumentRepository
 
 # ---------------------------------------------------------------------------
