@@ -28,7 +28,7 @@ async def list_documents(
     limit: int = Query(default=20, ge=1, le=100),
 ) -> DocumentList:
     """Paginated list of all indexed documents."""
-    return await service.list(skip=skip, limit=limit)
+    return await service.get_all(skip=skip, limit=limit)
 
 
 @router.get("/{document_id}", response_model=DocumentDetail)

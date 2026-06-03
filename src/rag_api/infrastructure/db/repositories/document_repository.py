@@ -12,7 +12,7 @@ class DocumentRepository(BaseRepository[Document]):
     def __init__(self, session: AsyncSession) -> None:
         super().__init__(session)
 
-    async def list(self, *, skip: int = 0, limit: int = 100) -> list[Document]:
+    async def get_all(self, *, skip: int = 0, limit: int = 100) -> list[Document]:
         result = await self._session.execute(
             select(Document).options(selectinload(Document.chunks)).offset(skip).limit(limit)
         )

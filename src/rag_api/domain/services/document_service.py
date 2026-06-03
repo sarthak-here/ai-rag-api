@@ -90,8 +90,8 @@ class DocumentService:
             updated_at=doc.updated_at,
         )
 
-    async def list(self, skip: int, limit: int) -> DocumentList:
-        docs = await self._repo.list(skip=skip, limit=limit)
+    async def get_all(self, skip: int, limit: int) -> DocumentList:
+        docs = await self._repo.get_all(skip=skip, limit=limit)
         total = await self._repo.count()
         items = [
             DocumentResponse(
