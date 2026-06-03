@@ -68,7 +68,7 @@ class VectorStore:
             hits.append(
                 SearchResult(
                     chunk_id=cid,
-                    document_id=meta.get("document_id", ""),
+                    document_id=str(meta.get("document_id", "")),
                     content=content,
                     distance=float(dist),
                 )

@@ -1,5 +1,7 @@
 from __future__ import annotations
 
+from typing import List
+
 from sqlalchemy import func, select
 from sqlalchemy.ext.asyncio import AsyncSession
 from sqlalchemy.orm import selectinload
@@ -32,7 +34,7 @@ class DocumentRepository(BaseRepository[Document]):
         result = await self._session.execute(select(func.count(Document.id)))
         return result.scalar_one()
 
-    async def add_chunks(self, chunks: list[Chunk]) -> None:
+    async def add_chunks(self, chunks: List[Chunk]) -> None:
         self._session.add_all(chunks)
         await self._session.flush()
 
