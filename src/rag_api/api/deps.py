@@ -15,6 +15,7 @@ from rag_api.core.config import Settings, get_settings
 from rag_api.domain.services.document_service import DocumentService
 from rag_api.domain.services.rag_service import RAGService
 from rag_api.infrastructure.ai.client import AIClient
+from rag_api.infrastructure.ai.ollama_client import OllamaClient
 from rag_api.infrastructure.db.repositories.document_repository import DocumentRepository
 from rag_api.infrastructure.db.session import get_session
 from rag_api.infrastructure.vector_store.chromadb_store import VectorStore
@@ -48,7 +49,9 @@ def get_vector_store(
 
 def get_ai_client(
     settings: Annotated[Settings, Depends(get_settings)],
-) -> AIClient:
+) -> AIClient | OllamaClient:
+    if settings.ai_provider == "ollama":
+        return OllamaClient(settings)
     return AIClient(settings)
 
 

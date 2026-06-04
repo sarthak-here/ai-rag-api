@@ -1,3 +1,5 @@
+from typing import Protocol
+
 from rag_api.core.exceptions import NotFoundError
 from rag_api.core.logging import get_logger
 from rag_api.domain.schemas.query import (
@@ -6,11 +8,15 @@ from rag_api.domain.schemas.query import (
     SourceChunk,
     SummarizeResponse,
 )
-from rag_api.infrastructure.ai.client import AIClient
 from rag_api.infrastructure.db.repositories.document_repository import DocumentRepository
 from rag_api.infrastructure.vector_store.chromadb_store import VectorStore
 
 logger = get_logger(__name__)
+
+
+class AIClientProtocol(Protocol):
+    def generate_answer(self, question: str, context_chunks: list[str]) -> str: ...
+    def summarize(self, text: str) -> str: ...
 
 
 class RAGService:
@@ -18,7 +24,7 @@ class RAGService:
         self,
         repo: DocumentRepository,
         vector_store: VectorStore,
-        ai_client: AIClient,
+        ai_client: AIClientProtocol,
     ) -> None:
         self._repo = repo
         self._vector_store = vector_store
